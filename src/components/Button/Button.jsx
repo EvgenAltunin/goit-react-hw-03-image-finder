@@ -1,7 +1,8 @@
-
+import { LoadMoreBtn } from "components/Button/Button.styled";
 
 export const Button = () => (
-    <>
-      <button type="button">Load more</button>
-    </>
+    <LoadMoreBtn
+      type="button">
+      Load more
+    </LoadMoreBtn>
   );
