@@ -1,7 +1,7 @@
 import { GalleryItem, ItemImage } from "components/ImageGalleryItem/ImageGalleryItem.styled";
 
-export const ImageGalleryItem = () => (
+export const ImageGalleryItem = ({src}) => (
   <GalleryItem>
-    <ItemImage src="" alt="" />
+    <ItemImage src={src} alt="" />
   </GalleryItem> 
 );
