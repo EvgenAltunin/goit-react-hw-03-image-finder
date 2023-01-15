@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+import React, { Component } from 'react';
 import { ReactComponent as SearchIcon } from '../../icons/search.svg';
 import {
   Search,
@@ -6,7 +8,6 @@ import {
   Input,
 } from 'components/Searchbar/Searchbar.styled';
 
-import React, { Component } from 'react';
 
 
 export class Searchbar extends Component {
@@ -22,12 +23,20 @@ export class Searchbar extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    if (this.state.searchQuery.trim() === '') {
-      alert("Search field must be filled!")
-      this.formReset();
-      return
+    
+    const { searchQuery } = this.state;
+    const { onFormSubmit } = this.props;
+    
+    if (searchQuery.trim() === '') {
+      toast.error('Search field must be filled!', {
+        position: 'top-right',
+        autoClose: 3000,
+        theme: 'colored',
+      });
+      return;
     }
-    this.props.onFormSubmit(this.state.searchQuery);
+    
+    onFormSubmit(searchQuery);
     this.formReset();
   };
 
@@ -36,6 +45,7 @@ export class Searchbar extends Component {
   }
 
   render() {
+    const { searchQuery } = this.state;
     return (
       <Search>
         <Form onSubmit={this.handleSubmit}>
@@ -47,11 +57,11 @@ export class Searchbar extends Component {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            value={this.state.searchQuery}
+            value={searchQuery}
             onChange={this.handleInputValueChange}
           />
         </Form>
       </Search>
     );
   }
-};
+}
