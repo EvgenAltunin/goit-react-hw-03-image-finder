@@ -1,6 +1,8 @@
-import { GalleryItem, ItemImage } from "components/ImageGalleryItem/ImageGalleryItem.styled";
+import {
+  GalleryItem,
+  ItemImage,
+} from 'components/ImageGalleryItem/ImageGalleryItem.styled';
 import PropTypes from 'prop-types';
-
 
 export const ImageGalleryItem = ({ item, onHandleModal }) => (
   <GalleryItem>
@@ -14,4 +16,5 @@ export const ImageGalleryItem = ({ item, onHandleModal }) => (
 
 ImageGalleryItem.propTypes = {
   item: PropTypes.object,
+  onHandleModal: PropTypes.func.isRequired,
 };

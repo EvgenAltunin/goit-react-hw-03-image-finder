@@ -1,5 +1,5 @@
 import axios from 'axios';
- import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import React, { Component } from 'react';
 import { searchParams, notificationParams } from 'settings/settings';
@@ -11,10 +11,6 @@ import { Button } from 'components/Button/Button';
 import { Modal } from 'components/Modal/Modal';
 import { ModalInner } from 'components/Modal/ModalInner';
 import { Container } from 'components/App.styled';
-
-
-
-// https://pixabay.com/api/?q=cat&page=1&key=31555510-20bee98b1f3b8ae280fb0cd2b&image_type=photo&orientation=horizontal&per_page=12
 
 export class App extends Component {
   state = {

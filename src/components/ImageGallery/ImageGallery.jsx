@@ -1,5 +1,5 @@
-import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem";
-import { Gallery } from "components/ImageGallery/ImageGallery.styled";
+import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
+import { Gallery } from 'components/ImageGallery/ImageGallery.styled';
 import PropTypes from 'prop-types';
 
 export const ImageGallery = ({ items, onHandleModal }) => {
@@ -18,8 +18,7 @@ export const ImageGallery = ({ items, onHandleModal }) => {
   );
 };
 
-
 ImageGallery.propTypes = {
   items: PropTypes.array,
-  onHandleModal: PropTypes.func
+  onHandleModal: PropTypes.func.isRequired,
 };

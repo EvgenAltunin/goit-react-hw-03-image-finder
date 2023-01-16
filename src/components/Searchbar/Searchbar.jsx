@@ -22,15 +22,15 @@ export class Searchbar extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    
+
     const { searchQuery } = this.state;
     const { onFormSubmit } = this.props;
-    
+
     if (searchQuery.trim() === '') {
       toast.error('Search field must be filled!', notificationParams);
       return;
     }
-    
+
     onFormSubmit(searchQuery);
     this.formReset();
   };
