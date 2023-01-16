@@ -2,14 +2,16 @@ import { GalleryItem, ItemImage } from "components/ImageGalleryItem/ImageGallery
 import PropTypes from 'prop-types';
 
 
-export const ImageGalleryItem = ({ id, webformatURL, tags }) => (
-  <GalleryItem key={id}>
-    <ItemImage src={webformatURL} alt={tags} />
+export const ImageGalleryItem = ({ item, onHandleModal }) => (
+  <GalleryItem>
+    <ItemImage
+      src={item.webformatURL}
+      alt={item.tags}
+      onClick={() => onHandleModal(item.largeImageURL, item.tags)}
+    />
   </GalleryItem>
 );
 
 ImageGalleryItem.propTypes = {
-  id: PropTypes.number,
-  webformatURL: PropTypes.string,
-  tags: PropTypes.string
+  item: PropTypes.object,
 };

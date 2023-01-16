@@ -13,10 +13,12 @@ export const Backdrop = styled.div`
   z-index: 1200;
 `;
 
-export const ModalContent = styled.div`
-    /* max-width: calc(100vw - 48px);
-    max-height: calc(100vh - 24px); */
-    width: 500px;
-    height: 500px;
-    background-color: aqua;
+export const ModalWindow = styled.div`
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 64px);
 `
+
+export const ModalImage = styled.img`
+    max-width: 100%;
+    max-height: 600px;
+`;

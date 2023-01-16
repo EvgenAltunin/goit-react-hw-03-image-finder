@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
 
-import { Backdrop, ModalContent } from 'components/Modal/Modal.styled';
+import { Backdrop, ModalWindow } from 'components/Modal/Modal.styled';
 
 const modalRoot = document.querySelector('#modal-root');
 
 export class Modal extends Component {
   componentDidMount() {
-    console.log('Modal componentDidMount');
+    // console.log('Modal componentDidMount');
     window.addEventListener('keydown', this.handleEscPress);
   }
 
   componentWillUnmount() {
-    console.log('Modal componentWillUnmount');
+    // console.log('Modal componentWillUnmount');
     window.removeEventListener('keydown', this.handleEscPress);
   }
 
@@ -37,7 +37,9 @@ export class Modal extends Component {
     const { children } = this.props;
     return createPortal(
       <Backdrop onClick={this.handleBackdropClick}>
-        <ModalContent>{children}</ModalContent>
+        <ModalWindow>
+          {children}
+        </ModalWindow>
       </Backdrop>,
       modalRoot
     );

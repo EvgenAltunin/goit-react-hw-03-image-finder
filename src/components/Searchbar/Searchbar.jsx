@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import { notificationParams } from 'settings/settings';
 import React, { Component } from 'react';
 import { ReactComponent as SearchIcon } from '../../icons/search.svg';
 import {
@@ -7,8 +8,6 @@ import {
   FormSubmit,
   Input,
 } from 'components/Searchbar/Searchbar.styled';
-
-
 
 export class Searchbar extends Component {
   state = {
@@ -28,11 +27,7 @@ export class Searchbar extends Component {
     const { onFormSubmit } = this.props;
     
     if (searchQuery.trim() === '') {
-      toast.error('Search field must be filled!', {
-        position: 'top-right',
-        autoClose: 3000,
-        theme: 'colored',
-      });
+      toast.error('Search field must be filled!', notificationParams);
       return;
     }
     

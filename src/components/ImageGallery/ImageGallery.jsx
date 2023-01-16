@@ -2,23 +2,24 @@ import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem";
 import { Gallery } from "components/ImageGallery/ImageGallery.styled";
 import PropTypes from 'prop-types';
 
-
-export const ImageGallery = ({ items }) => {
+export const ImageGallery = ({ items, onHandleModal }) => {
   return (
     <Gallery>
       {items.map(item => {
-        return <ImageGalleryItem
-          id={item.id}
-          webformatURL={item.webformatURL}
-          tags={item.tags}
-        />;
+        return (
+          <ImageGalleryItem
+            key={item.id}
+            item={item}
+            onHandleModal={onHandleModal}
+          />
+        );
       })}
-        
-
     </Gallery>
   );
 };
 
+
 ImageGallery.propTypes = {
-  items: PropTypes.array.isRequired
+  items: PropTypes.array,
+  onHandleModal: PropTypes.func
 };

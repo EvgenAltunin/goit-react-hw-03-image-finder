@@ -2,22 +2,17 @@ import axios from 'axios';
  import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import React, { Component } from 'react';
+import { searchParams, notificationParams } from 'settings/settings';
 
 import { Searchbar } from 'components/Searchbar/Searchbar';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { Loader } from 'components/Loader/Loader';
 import { Button } from 'components/Button/Button';
 import { Modal } from 'components/Modal/Modal';
-
+import { ModalInner } from 'components/Modal/ModalInner';
 import { Container } from 'components/App.styled';
 
-const searchParams = {
-  BASE_URL: 'https://pixabay.com/api/',
-  API_KEY: '31555510-20bee98b1f3b8ae280fb0cd2b',
-  IMAGE_TYPE: 'photo',
-  ORIENTATION: 'horizontal',
-  PER_PAGE: 5,
-};
+
 
 // https://pixabay.com/api/?q=cat&page=1&key=31555510-20bee98b1f3b8ae280fb0cd2b&image_type=photo&orientation=horizontal&per_page=12
 
@@ -27,15 +22,21 @@ export class App extends Component {
     showModal: false,
     receivedImages: [],
     isLoading: false,
-    isError: false,
     loadMoreBtnVisible: false,
     page: 1,
-    selectedImgSrc: null,
+    url: '',
+    alt: '',
   };
 
   componentDidUpdate(_, prevState) {
     const { page, searchQuery } = this.state;
-    if (prevState.page !== page || prevState.searchQuery !== searchQuery) {
+    if (prevState.page !== page) {
+      this.fetchData(searchQuery);
+    } else if (prevState.searchQuery !== searchQuery) {
+      this.setState({
+        receivedImages: [],
+        page: 1,
+      });
       this.fetchData(searchQuery);
     }
   }
@@ -50,10 +51,15 @@ export class App extends Component {
     });
   };
 
-  togleModal = () => {
+  toggleModal = () => {
     this.setState(({ showModal }) => ({
       showModal: !showModal,
     }));
+  };
+
+  handleModal = (url, alt) => {
+    this.toggleModal();
+    this.setState({ url: url, alt: alt });
   };
 
   fetchData = async () => {
@@ -67,74 +73,59 @@ export class App extends Component {
       );
 
       if (data.total === 0) {
-        toast.error('No images found. Try again.', {
-          position: 'top-right',
-          autoClose: 3000,
-          theme: 'colored',
-        });
+        toast.error('No images found. Try again.', { notificationParams });
         return;
       }
 
       if (data.total > 0 && page === 1) {
-        toast.success(`We found ${data.total} images!`, {
-          position: 'top-right',
-          autoClose: 3000,
-          theme: 'colored',
-        });
+        toast.success(`We found ${data.total} images!`, { notificationParams });
         this.setState({ loadMoreBtnVisible: true });
-
       } else if (data.total > 0 && page > 1 && data.hits.length < PER_PAGE) {
         toast.warning("You've reached the end of search results!", {
-          position: 'top-right',
-          autoClose: 3000,
-          theme: 'colored',
+          notificationParams,
         });
         this.setState({ loadMoreBtnVisible: false });
       }
 
-      this.setState(prevState => ({ receivedImages: [...prevState.receivedImages, ...data.hits]}));
+      this.setState(prevState => ({
+        receivedImages: [...prevState.receivedImages, ...data.hits],
+      }));
       this.setState({ isLoading: false });
-
     } catch (error) {
       console.log(error);
-      this.setState({ isError: error });
+      toast.error('Oops, something went wrong. Try again.', {
+        notificationParams,
+      });
     } finally {
       this.setState({ isLoading: false });
     }
   };
 
   render() {
-    const { showModal, isLoading, receivedImages, loadMoreBtnVisible } =
-      this.state;
+    const {
+      showModal,
+      isLoading,
+      receivedImages,
+      loadMoreBtnVisible,
+      alt,
+      url,
+    } = this.state;
 
     return (
       <Container>
+        <Searchbar onFormSubmit={this.handleSearchFormSubmit}></Searchbar>
+        <ImageGallery items={receivedImages} onHandleModal={this.handleModal} />
+        {isLoading && <Loader />}
+        {loadMoreBtnVisible && <Button onLoadMoreBtnClick={this.onLoadMore} />}
+        <ToastContainer
+          theme="colored"
+          autoClose={notificationParams.autoClose}
+        />
         {showModal && (
-          <Modal onClose={this.togleModal}>
-            <img src="" alt="" />
+          <Modal onClose={this.toggleModal}>
+            <ModalInner url={url} alt={alt} />
           </Modal>
         )}
-        <Searchbar onFormSubmit={this.handleSearchFormSubmit}></Searchbar>
-        {/* <button type="button" onClick={this.togleModal}>
-          Open modal
-        </button> */}
-        <ImageGallery items={receivedImages} />
-        {isLoading && <Loader />}
-        {loadMoreBtnVisible && (
-          <Button onLoadMoreBtnClick={this.onLoadMore} />
-        )}
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
       </Container>
     );
   }
