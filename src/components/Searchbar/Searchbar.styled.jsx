@@ -10,7 +10,7 @@ export const Search = styled.header`
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 64px;
+    min-height: 95px;
     padding-right: 24px;
     padding-left: 24px;
     padding-top: 12px;
