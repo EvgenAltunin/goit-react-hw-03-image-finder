@@ -26,14 +26,9 @@ export class App extends Component {
 
   componentDidUpdate(_, prevState) {
     const { page, searchQuery } = this.state;
-    if (prevState.page !== page) {
+    if (prevState.page !== page || prevState.searchQuery !== searchQuery) {
       this.fetchData(searchQuery);
-    } else if (prevState.searchQuery !== searchQuery) {
-      this.setState({
-        receivedImages: [],
-        page: 1,
-      });
-      this.fetchData(searchQuery);
+      
     }
   }
 
@@ -44,6 +39,14 @@ export class App extends Component {
   handleSearchFormSubmit = searchQuery => {
     this.setState({
       searchQuery: searchQuery,
+
+    });
+
+    this.setState(prevState => {
+      if (prevState.searchQuery !== this.state.searchQuery) {
+        return { page: 1, receivedImages: [] };
+      }
+      return;
     });
   };
 
@@ -86,6 +89,7 @@ export class App extends Component {
       this.setState(prevState => ({
         receivedImages: [...prevState.receivedImages, ...data.hits],
       }));
+
       this.setState({ isLoading: false });
     } catch (error) {
       console.log(error);

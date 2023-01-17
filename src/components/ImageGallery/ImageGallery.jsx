@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 export const ImageGallery = ({ items, onHandleModal }) => {
   return (
     <Gallery>
-      {items.map(item => {
+      {items.length > 0 && items.map(item => {
         return (
           <ImageGalleryItem
             key={item.id}
