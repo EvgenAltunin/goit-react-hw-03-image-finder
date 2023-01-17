@@ -18,7 +18,7 @@ export class App extends Component {
     showModal: false,
     receivedImages: [],
     isLoading: false,
-    loadMoreBtnVisible: false,
+    receivedImagesHits: [],
     page: 1,
     url: '',
     alt: '',
@@ -78,24 +78,25 @@ export class App extends Component {
 
       if (data.total > 0 && page === 1) {
         toast.success(`We found ${data.total} images!`, { notificationParams });
-        this.setState({ loadMoreBtnVisible: true });
+
       } else if (data.total > 0 && page > 1 && data.hits.length < PER_PAGE) {
         toast.warning("You've reached the end of search results!", {
           notificationParams,
         });
         this.setState({ loadMoreBtnVisible: false });
       }
-
+      this.setState({receivedImagesHits: data})
       this.setState(prevState => ({
         receivedImages: [...prevState.receivedImages, ...data.hits],
       }));
 
       this.setState({ isLoading: false });
     } catch (error) {
-      console.log(error);
-      toast.error('Oops, something went wrong. Try again.', {
+      console.log(error.message);
+      toast.error(`${error.message}. Try again.`, {
         notificationParams,
       });
+      this.setState({ loadMoreBtnVisible: false });
     } finally {
       this.setState({ isLoading: false });
     }
@@ -106,7 +107,7 @@ export class App extends Component {
       showModal,
       isLoading,
       receivedImages,
-      loadMoreBtnVisible,
+      receivedImagesHits,
       alt,
       url,
     } = this.state;
@@ -116,7 +117,9 @@ export class App extends Component {
         <Searchbar onFormSubmit={this.handleSearchFormSubmit}></Searchbar>
         <ImageGallery items={receivedImages} onHandleModal={this.handleModal} />
         {isLoading && <Loader />}
-        {loadMoreBtnVisible && <Button onLoadMoreBtnClick={this.onLoadMore} />}
+        {receivedImages.length === 0 || receivedImagesHits.totalHits === receivedImages.length || (
+          <Button onLoadMoreBtnClick={this.onLoadMore} />
+        )}
         <ToastContainer
           theme="colored"
           autoClose={notificationParams.autoClose}
